@@ -13,5 +13,8 @@ for head in data:
     tmp += 1
     # print(head,tmp)
 
-for x in processed_data:
-    print(x)
+# for x in processed_data:
+#     print(x)
+
+inst.setSymbolic(processed_data)
+print(inst.symbolic)
