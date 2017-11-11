@@ -11,10 +11,10 @@ for head in data:
     for sp in head[7:].split():
         processed_data[tmp].append(sp)
     tmp += 1
-    # print(head,tmp)
 
 # for x in processed_data:
 #     print(x)
 
 inst.setSymbolic(processed_data)
-print(inst.symbolic)
+print(inst.seperate(processed_data[2]))
+# print(inst.symbolic)

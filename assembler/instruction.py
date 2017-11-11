@@ -10,18 +10,20 @@ toConvert = []
 
 def seperate(inst):
     if(J.isJ(inst[2])):
-        J.convert(inst)
+        return J.convert(inst,symbolic)
     elif(I.isI(inst[2])):
-        I.convert(inst)
+        return I.convert(inst,symbolic)
     elif(O.isO(inst[2])):
-        O.convert(inst)
+        return O.convert(inst,symbolic)
     elif(R.isR(inst[2])):
-        R.convert(inst)
-    elif(inst[2] != '.fill'):
-        print('opcode undefined')
+        return R.convert(inst,symbolic)
+    elif(inst[2] == '.fill'):
+        return convert(inst)
+    else:
+        return 'opcode undefined'
 
 def convert(inst):
-    print(inst)
+    return inst[3]
 
 
 def setSymbolic(data):
