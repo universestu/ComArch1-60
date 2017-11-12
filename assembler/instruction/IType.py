@@ -18,6 +18,8 @@ def setFields(inst,symbolic):
     except ValueError:
         if inst[5] in symbolic:
             offsetField = int(symbolic[inst[5]])
+            if inst[2] == 'beq':
+                offsetField = branchAddress(inst, offsetField)
         else:
             print("Label undefined")
             exit(1)
@@ -27,6 +29,9 @@ def setFields(inst,symbolic):
     else:
         print('OffsetField out of range')
         exit(1)
+
+def branchAddress(inst,target):
+    return target - (inst[0]+1)
 
 def convert(inst,symbolic):
     setFields(inst,symbolic)

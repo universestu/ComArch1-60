@@ -20,10 +20,18 @@ def seperate(inst):
     elif(inst[2] == '.fill'):
         return convert(inst)
     else:
-        return 'opcode undefined'
+        return "opcode undefined"
+        exit(1)
 
 def convert(inst):
-    return inst[3]
+    try:
+        return int(inst[3])
+    except ValueError:
+        if inst[3] in symbolic:
+            return int(symbolic[inst[3]])
+        else:
+            print("Label undefined")
+            exit(1)
 
 
 def setSymbolic(data):
@@ -31,7 +39,4 @@ def setSymbolic(data):
         if(e[1][0] != '' and e[2] != '.fill'):
             symbolic[e[1][0]] = e[0]
         elif(e[2] == '.fill'):
-            if(e[3] in symbolic):
-                symbolic[e[1][0]] = symbolic[e[3]]
-            else:
-                symbolic[e[1][0]] = e[3]
+            symbolic[e[1][0]] = e[0]
