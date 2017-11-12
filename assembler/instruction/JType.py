@@ -8,8 +8,8 @@ def isJ(inst):
 
 def setFields(inst):
     global regA
-    regA = "{0:03b}".format(int(inst[3]))
     global regB
+    regA = "{0:03b}".format(int(inst[3]))
     regB = "{0:03b}".format(int(inst[4]))
 
 def convert(inst,symbolic):

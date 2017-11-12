@@ -21,7 +21,7 @@ def setFields(inst,symbolic):
             if inst[2] == 'beq':
                 offsetField = branchAddress(inst, offsetField)
         else:
-            print("Label undefined")
+            print("\""+ inst[5] +"\" Label undefined")
             exit(1)
 
     if -32768 <= offsetField <= 32767:

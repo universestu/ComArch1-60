@@ -14,7 +14,6 @@ for head in data:
 
 inst.setSymbolic(processed_data)
 for x in processed_data:
-    # print(inst.seperate(x))
     try:
         print( int(inst.seperate(x), 2) )
     except TypeError:

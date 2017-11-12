@@ -20,23 +20,34 @@ def seperate(inst):
     elif(inst[2] == '.fill'):
         return convert(inst)
     else:
-        return "opcode undefined"
+        print("\""+ inst[2] +"\" Unknown instruction")
         exit(1)
 
 def convert(inst):
     try:
-        return int(inst[3])
+        if -32768 <= int(inst[3]) <= 32767*2:
+            return int(inst[3])
+        else:
+            print("\"" + inst[3] + "\" Offset value out off range")
+            exit(1)
     except ValueError:
         if inst[3] in symbolic:
             return int(symbolic[inst[3]])
         else:
-            print("Label undefined")
+            print("\""+ inst[3] +"\" Label undefined")
             exit(1)
 
 
 def setSymbolic(data):
     for e in data:
+        if e[1][0] in symbolic:
+            print("\""+  e[1][0] +"\" Label is already used")
+            exit(1)
         if(e[1][0] != '' and e[2] != '.fill'):
             symbolic[e[1][0]] = e[0]
         elif(e[2] == '.fill'):
-            symbolic[e[1][0]] = e[0]
+            if -32768 <= e[0] <= 32767*2:
+                symbolic[e[1][0]] = e[0]
+            else:
+                print("\""+ e[0] +"\" Offset value out off range")
+                exit(1)
