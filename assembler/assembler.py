@@ -16,5 +16,5 @@ for head in data:
 #     print(x)
 
 inst.setSymbolic(processed_data)
-print(inst.seperate(processed_data[1]), len(inst.seperate(processed_data[1])))
+print(inst.seperate(processed_data[5]), len(inst.seperate(processed_data[5])))
 # print(inst.symbolic)
