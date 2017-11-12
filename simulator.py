@@ -36,10 +36,10 @@ def convertToBinary(n):
 def process(c,s):
     if c[0:3] == "000":
         add(c,s)
-    # elif c[0:3] == "001":
-    #     nand(c,s)
-    # elif c[0:3] == "010":
-    #     lw(c,s)
+    elif c[0:3] == "001":
+        nand(c,s)
+    elif c[0:3] == "010":
+        lw(c,s)
     # elif c[0:3] == "011":
     #     sw(c,s)
     # elif c[0:3] == "100":
@@ -57,17 +57,37 @@ def add(c,s):
     destReg = int(c[23:25],2)
     s.reg[destReg] = s.reg[regA] + s.reg[regB]
 
+def nand(c,s):
+    regA = int(c[4:6],2)
+    regB = int(c[7:9],2)
+    destReg = int(c[23:25],2)
+    s.reg[destReg] = ~(s.reg[regA] & s.reg[regB])
+
+def lw(c,s):
+    regA = int(c[4:6],2)
+    regB = int(c[7:9],2)
+    offsetField = int(c[9:25],2)
+    s.reg[regB] = s.mem[s.reg[regA]+offsetField]
+
+def sw(c,s):
+    regA = int(c[4:6],2)
+    regB = int(c[7:9],2)
+    offsetField = int(c[9:25],2)
+    s.mem[s.reg[regA]+offsetField] = s.reg[regB]
 
 def main():
     state = stateStruct()
-    state.reg[1] = 2
-    state.reg[2] = 3
+    # state.reg[1] = 2
+    # state.reg[2] = 3
     with open(sys.argv[1], 'r') as f:
         try:
             for line in f:
-                process (convertToBinary(int(line)),state)
+                state.mem[state.numMemory] = int(line)
+                state.numMemory += 1
         except IOError:
             print ("error: usage:",sys.argv[1],"<machine-code file>\n".format(e.errno, e.strerror))
-        printState(state)
+        for p in range(0,state.numMemory):
+            process (convertToBinary(state.mem[p]),state)
+            printState(state)
 
 main()
