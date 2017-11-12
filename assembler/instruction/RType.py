@@ -20,9 +20,9 @@ def setFields(inst):
 def convert(inst,symbolic):
     setFields(inst)
     result = format(0, '07') #31-25
-    result += RInst[inst[2]] #24-22
-    result += regA #21-19
-    result += regB #18-16
+    result += RInst[inst[2]][-3:] #24-22
+    result += regA[-3:] #21-19
+    result += regB[-3:] #18-16
     result += format(0, '013') #15-3
-    result += destReg #2-0
+    result += destReg[-3:] #2-0
     return result
