@@ -19,10 +19,10 @@ def setFields(inst):
 
 def convert(inst,symbolic):
     setFields(inst)
-    result = '0000000' #31-25
+    result = format(0, '07') #31-25
     result += RInst[inst[2]] #24-22
     result += regA #21-19
     result += regB #18-16
-    result += '0000000000000'
+    result += format(0, '013') #15-3
     result += destReg #2-0
     return result

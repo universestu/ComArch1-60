@@ -30,7 +30,7 @@ def setFields(inst,symbolic):
 
 def convert(inst,symbolic):
     setFields(inst,symbolic)
-    result = '0000000' #31-25
+    result = format(0, '07') #31-25
     result += IInst[inst[2]] #24-22
     result += regA #21-19
     result += regB #18-16'

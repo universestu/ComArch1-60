@@ -5,7 +5,7 @@ def isO(inst):
     return inst in OInst
 
 def convert(inst,symbolic):
-    result = '0000000' #31-25
+    result = format(0, '07') #31-25
     result += OInst[inst[2]] #24-22
     result += format(0, '022') #21-0
     return result
