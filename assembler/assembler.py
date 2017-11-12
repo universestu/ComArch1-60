@@ -13,17 +13,12 @@ for head in data:
     tmp += 1
 
 inst.setSymbolic(processed_data)
-for x in processed_data:
-    try:
-        print( int(inst.seperate(x), 2) )
-    except TypeError:
-        print(inst.seperate(x))
-    # print(x)
 
-# for x in inst.symbolic:
-#     print(x, inst.symbolic[x])
-
-
-
-# print(inst.seperate(processed_data[2]), len(inst.seperate(processed_data[2])))
-# print(inst.symbolic)
+with open(input.sys.argv[2], 'w') as output_file:
+    for x in processed_data:
+        try:
+            output_file.writelines(str(int(inst.seperate(x), 2))+'\n')
+        except TypeError:
+            output_file.writelines(str(inst.seperate(x))+'\n')
+    output_file.close()
+exit(0)
