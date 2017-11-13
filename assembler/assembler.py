@@ -18,6 +18,7 @@ with open(input.sys.argv[2], 'w') as output_file:
     for x in processed_data:
         try:
             output_file.writelines(str(int(inst.seperate(x), 2))+'\n')
+            # output_file.writelines(str(inst.seperate(x)) + '\n')
         except TypeError:
             output_file.writelines(str(inst.seperate(x))+'\n')
     output_file.close()
