@@ -50,11 +50,11 @@ def process(c,s): #check opcode and select fucntion
         sw(c,s)
     elif c[0:3] == "100": #check opcode branch equal
         beq(c,s)
-    elif c[0:3] == "101": #check jump
+    elif c[0:3] == "101": #check opcode jump
         jalr(c,s)
-    elif c[0:3] == "110": #check halt
-        s.pc += 1
-        # if opcode is noop do nothing
+    elif c[0:3] == "110": #check opcode halt
+        halt(c,s)
+    # if opcode is noop do nothing
 
 def add(c,s):
     regA = int(c[4:6],2) #select register at regA
@@ -73,7 +73,7 @@ def nand(c,s):
 def lw(c,s):
     regA = int(c[4:6],2)
     regB = int(c[7:9],2)
-    offsetField = twosComplement(c)
+    offsetField = twosComplement(c) #convert 2's complement string to decimal
     s.reg[regB] = s.mem[s.reg[regA]+offsetField]
     s.pc += 1
 
@@ -103,6 +103,10 @@ def jalr(c,s):
     else:
         s.reg[regB] = s.pc + 1
         s.pc = s.pc + 1
+
+def halt(c,s):
+    s.pc += 1
+
 
 def main():
     state = stateStruct()
