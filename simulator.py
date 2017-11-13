@@ -44,6 +44,7 @@ def twosComplement(c): #convert 2's complement to Decimal
 def process(c,s): #check opcode and select fucntion
     global count
     printState(s)
+    print ("count : " ,count)
     count += 1
     if c[0:3] == "000": #check opcode add
         add(c,s)
@@ -123,12 +124,15 @@ def beq(c,s):
 def jalr(c,s):
     regA = int(c[3:6],2)
     regB = int(c[6:9],2)
+    print(c)
+    print("jarl:regA = ",regA)
+    print("jarl:regB = ",regB)
     if regA != regB:
         s.reg[regB] = s.pc + 1
         s.pc = s.reg[regA]
     else:
         s.reg[regB] = s.pc + 1
-        s.pc = s.pc + 1
+        s.pc += 1
 
 def halt(cnt,s):
     global halt

@@ -1,0 +1,25 @@
+            lw 0 1 i1
+            lw 0 2 i1
+	          lw 0 3 i3
+loop        lw 0 4 i5
+	          nand 4 1 4
+	          nand 4 4 4
+	          beq 4 0 cont
+      	      add 6 3 6
+cont        add 3 3 3
+	          add 1 1 1
+	          lw 0 4 i1
+	          add 2 4 2
+	          nand 2 2 5
+            lw 0 7 i1
+	          add 5 7 5
+	          lw 0 7 i16
+	          add 5 7 5
+	          beq 5 0 exit
+	          beq 0 0 loop
+exit        add 0 6 1
+            halt
+i1          .fill 1
+i3     .fill 3
+i5      .fill 5
+i16         .fill 16
