@@ -1,0 +1,52 @@
+           lw 0 1 in
+           lw 0 2 ir
+           lw 0 5 SpMem
+           lw 0 4 funcL
+           jalr 4 7
+           halt
+           lw 0 4 Ni3
+           add 5 4 5
+           sw 5 1 0
+           sw 5 2 1
+           sw 5 7 2
+           beq 2 0 setA
+           add 0 0 6
+           beq 0 0 calB
+setA       lw 0 6 i1
+calB       beq 1 2 setB
+           add 0 0 1
+           beq 0 0 calC
+setB       lw 0 1 i1
+calC       nand 1 1 1
+           nand 6 6 6
+           nand 6 1 6
+           lw 5 1 0
+           beq 0 6 false
+           lw 0 4 i1
+           add 3 4 3
+           lw 5 4 2
+           lw 0 6 i3
+           add 5 6 5
+           jalr 4 6
+false      lw 0 6 Ni1
+           add 1 6 1
+           lw 0 4 funcL
+           jalr 4 7
+           lw 0 6 Ni1
+           add 2 6 2
+           lw 0 4 funcL
+           jalr 4 7
+           lw 5 1 0
+           lw 5 2 1
+           lw 5 4 2
+           lw 0 6 i3
+           add 5 6 5
+           jalr 4 7
+SpMem      .fill 10000
+funcL      .fill 6
+i3         .fill 3
+Ni3        .fill -3
+i1         .fill 1
+Ni1        .fill -1
+in         .fill 7
+ir         .fill 3
