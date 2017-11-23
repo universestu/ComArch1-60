@@ -3,8 +3,8 @@ import sys
 NUMMEMORY = 65536 # maximum number of words in memory
 NUMREGS = 8 # number of machine registers
 MAXLINELENGTH = 1000
-halt = 0
-count = 0
+halt = 0 # process run or stop
+count = 0 # instruction count
 
 class stateStruct:
     pc = None
@@ -29,17 +29,17 @@ def printState(p): #print the state
         print ("\t \treg[ ",i," ] " , p.reg[i])
     print ("end state")
 
-def convertToBinary(n): #convert Decimal to Binary
+def convertToBinary(n): #convert int Decimal to String Binary
     if n >= 0:
         return str("{0:025b}".format(n))
     else:
         return str("{0:25b}".format((~(int("{0:24b}".format(abs(n)))) + 0b1) & 0x1ffffff))
 
-def twosComplement(c): #convert 2's complement to Decimal
-	if c[9:10] == "1":
-		return (int(c[10:25],2))-32768
+def twosComplement(c,f,l): #convert String 2's complement to int Decimal
+	if c[f:f+1] == "1": # check sign bit
+		return (int(c[f+1:l],2))-pow(2,l-f-1)
 	else:
-		return int(c[10:25],2)
+		return int(c[f+1:l],2)
 
 def process(c,s): #check opcode and select fucntion
     global count
@@ -60,88 +60,75 @@ def process(c,s): #check opcode and select fucntion
         jalr(c,s)
     elif c[0:3] == "110": #check opcode halt
         halt(count,s)
-    # if opcode is noop do nothing
+    # if opcode is noop (111) do nothing
 
 def add(c,s):
-    regA = int(c[3:6],2) #select register at regA
-    regB = int(c[6:9],2) #select register at regB
-    destReg = int(c[22:25],2) #select register at destReg
-    s.reg[destReg] = s.reg[regA] + s.reg[regB] #store add of A and B
-    print(c)
-    print("add:regA = ",regA)
-    print("add:regB = ",regB)
-    print(s.reg[destReg])
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
+    destReg = int(c[22:25],2) #set destReg
+    s.reg[destReg] = s.reg[regA] + s.reg[regB]
+    #store add value of register
+    #at address A and B to register address at destReg
     s.pc += 1 #next instruction
 
 def nand(c,s):
-    regA = int(c[3:6],2)
-    regB = int(c[6:9],2)
-    destReg = int(c[22:25],2)
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
+    destReg = int(c[22:25],2) #set destReg
     s.reg[destReg] = ~(s.reg[regA] & s.reg[regB])
-    print(c)
-    print("nand:regA = ",regA)
-    print("nand:regB = ",regB)
-    print(s.reg[destReg])
-    s.pc += 1
+    #store nand value of register
+    #at address A and B to register address at destReg
+    s.pc += 1 #next instruction
 
 def lw(c,s):
-    regA = int(c[3:6],2)
-    regB = int(c[6:9],2)
-    print(c)
-    print("lw:regA = ",regA)
-    print("lw:regB = ",regB)
-    offsetField = twosComplement(c)
-    print("lw:offset = ",offsetField) #convert 2's complement string to deciamal
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
+    offsetField = twosComplement(c,9,25) #set offsetField
     s.reg[regB] = s.mem[s.reg[regA]+offsetField]
-    s.pc += 1
+    #load value from memory address at regA + offsetField
+    #to register address at regB
+    s.pc += 1 #next instruction
 
 def sw(c,s):
-    regA = int(c[3:6],2)
-    regB = int(c[6:9],2)
-    offsetField = twosComplement(c)
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
+    offsetField = twosComplement(c,9,25) #set offsetField
     s.mem[s.reg[regA]+offsetField] = s.reg[regB]
-    print(c)
-    print("sw:regA = ",regA)
-    print("sw:regB = ",regB)
-    print(s.reg[regB])
-    print(s.mem[s.reg[regA]+offsetField])
-    s.pc += 1
+    #store value from register address at regB
+    #to memory address at regA + offsetField
+    s.pc += 1 #next instruction
 
 def beq(c,s):
-    regA = int(c[3:6],2)
-    regB = int(c[6:9],2)
-    offsetField = twosComplement(c)
-    print(c)
-    print("beq:regA = ",regA)
-    print("beq:regB = ",regB)
-    print(offsetField)
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
+    offsetField = twosComplement(c,9,25) #set offsetField
     if s.reg[regA] == s.reg[regB]:
-        s.pc = s.pc + 1 + offsetField
+    #check value of register A = value of register B
+        s.pc = s.pc + 1 + offsetField #branch instruction
     else:
-        s.pc += 1
-
+        s.pc += 1 #next instruction
 
 def jalr(c,s):
-    regA = int(c[3:6],2)
-    regB = int(c[6:9],2)
-    print(c)
-    print("jarl:regA = ",regA)
-    print("jarl:regB = ",regB)
+    regA = int(c[3:6],2) #set regA
+    regB = int(c[6:9],2) #set regB
     if regA != regB:
+    #check value of register A != value of register B
         s.reg[regB] = s.pc + 1
+        #store next instruction to register B
         s.pc = s.reg[regA]
+        #branch instruction
     else:
-        s.reg[regB] = s.pc + 1
-        s.pc += 1
+        s.reg[regB] = s.pc + 1 #store next instruction to register B
+        s.pc += 1 #next instruction
 
 def halt(cnt,s):
     global halt
-    s.pc += 1
+    s.pc += 1 #next instruction
     print ("machine halted")
     print ("total of ",cnt," instructions executed.")
     print ("final state of machine:")
     printState(s)
-    halt = 1
+    halt = 1 #stop process
 
 def main():
     state = stateStruct()
@@ -153,7 +140,7 @@ def main():
                 state.numMemory += 1
         except IOError:
             print ("error: usage:",sys.argv[1],"<machine-code file>\n".format(e.errno, e.strerror))
-    while halt != 1:
+    while halt != 1: #loop until halt
         process (convertToBinary(state.mem[state.pc]),state)
 
 main()
