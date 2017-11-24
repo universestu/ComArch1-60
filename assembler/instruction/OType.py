@@ -1,7 +1,7 @@
 OInst = {'halt':'110', 'noop':'111'}        # Declare available instruction
 fields = 0
 
-def isO(inst):                              # J-Type check
+def isO(inst):                              # O-Type check
     return inst in OInst
 
 def convert(inst,symbolic):                 # Assemble each part

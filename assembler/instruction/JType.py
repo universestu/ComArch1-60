@@ -6,7 +6,7 @@ regB = ''
 def isJ(inst):                              # J-Type check
     return inst in JInst
 
-def setFields(inst):                        # Set I-Type fields
+def setFields(inst):                        # Set J-Type fields
     global regA
     global regB
     regA = "{0:03b}".format(int(inst[3]))   # Convert field 1 to binary

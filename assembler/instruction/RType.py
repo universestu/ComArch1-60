@@ -1,13 +1,13 @@
-RInst = {'add':'000', 'nand':'001'}
+RInst = {'add':'000', 'nand':'001'}             # Declare available instruction
 fields = 3
 regA = ''
 regB = ''
 destReg = ''
 
-def isR(inst):
+def isR(inst):                                  # R-Type check
     return inst in RInst
 
-def setFields(inst):
+def setFields(inst):                            # Set R-Type fields
     global regA
     regA = "{0:03b}".format(int(inst[3]))
     global regB
@@ -16,8 +16,7 @@ def setFields(inst):
     destReg= "{0:03b}".format(int(inst[5]))
 
 
-
-def convert(inst,symbolic):
+def convert(inst,symbolic):                     # Assemble each part
     setFields(inst)
     result = format(0, '07') #31-25
     result += RInst[inst[2]][-3:] #24-22
