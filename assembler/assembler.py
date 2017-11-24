@@ -14,12 +14,15 @@ for head in data:
 
 inst.setSymbolic(processed_data)
 
-with open(input.sys.argv[2], 'w') as output_file:
+with open(input.sys.argv[1].split('.')[0] + '-out.asm', 'w') as output_file:
     for x in processed_data:
         try:
-            output_file.writelines(str(int(inst.seperate(x), 2))+'\n')
-            # output_file.writelines(str(inst.seperate(x)) + '\n')
+            if('-b' in input.sys.argv):
+                print('write in binary mode')
+                output_file.writelines(str(inst.seperate(x))  +'\n')
+            else:
+                output_file.writelines(str(int(inst.seperate(x), 2))+'\n')
         except TypeError:
-            output_file.writelines(str(inst.seperate(x))+'\n')
+            output_file.writelines(str(inst.seperate(x)) +'\n')
     output_file.close()
 exit(0)

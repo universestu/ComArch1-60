@@ -6,7 +6,6 @@ import OType as O
 import RType as R
 
 symbolic = {}
-toConvert = []
 
 def seperate(inst):
     if(J.isJ(inst[2])):
