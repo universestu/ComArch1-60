@@ -3,8 +3,10 @@ import sys
 NUMMEMORY = 65536 # maximum number of words in memory
 NUMREGS = 8 # number of machine registers
 MAXLINELENGTH = 1000
+
 halt = 0 # process run or stop
 count = 0 # instruction count
+
 
 class stateStruct:
     pc = None
@@ -15,9 +17,11 @@ class stateStruct:
         self.pc = 0
         self.mem = [0] * NUMMEMORY
         self.reg = [0] * NUMREGS
+
         self.numMemory = 0
 
 def printState(p): #print the state
+
     i = 0
     print ('\n@@@\nstate:')
     print ("\tpc ", p.pc )
@@ -26,6 +30,7 @@ def printState(p): #print the state
         print ("\t \tmem[ ",i," ] ", p.mem[i])
     print ("\tregisters:")
     for i in range(0,NUMREGS):
+
         print ("\t \treg[ ",i," ] " , p.reg[i])
     print ("end state")
 
@@ -142,5 +147,6 @@ def main():
             print ("error: usage:",sys.argv[1],"<machine-code file>\n".format(e.errno, e.strerror))
     while halt != 1: #loop until halt
         process (convertToBinary(state.mem[state.pc]),state)
+
 
 main()

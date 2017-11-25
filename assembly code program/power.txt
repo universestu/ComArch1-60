@@ -1,0 +1,33 @@
+           lw 0 1 ir
+           lw 0 3 i1
+           beq 0 1 exit
+           lw 0 3 in
+           lw 0 4 in
+           lw 0 6 i1
+           lw 0 6 i1
+           lw 0 7 i1
+loopI      nand 6 6 1
+           lw 0 2 i1
+           add 1 2 1
+           lw 0 2 ir
+           add 1 2 1
+           beq 1 0 exit
+loopJ      nand 7 7 1
+           lw 0 2 i1
+           add 1 2 1
+           lw 0 2 in
+           add 1 2 1
+           beq 1 0 Inc
+           add 3 4 3
+           lw 0 1 i1
+           add 7 1 7
+           beq 0 0 loopJ
+Inc        add 0 3 4
+           lw 0 7 i1
+           lw 0 1 i1
+           add 6 1 6
+           beq 0 0 loopI
+exit       halt
+in         .fill 3
+ir         .fill 4
+i1         .fill 1
